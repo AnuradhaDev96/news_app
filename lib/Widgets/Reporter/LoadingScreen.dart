@@ -10,11 +10,12 @@ class LoadingScreen extends StatefulWidget {
 
 
 class _LoadingScreenState extends State<LoadingScreen> {
-      
+      // final ColorSwatch colorSwatch;
+
       @override
       Widget build(BuildContext context) {
         return SplashScreen(
-          seconds: 8,
+          seconds: 1,
           backgroundColor: Colors.white,
           image: Image.asset("assets/cnews.gif"),
           loaderColor: Colors.white,
@@ -23,7 +24,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
           title: Text(
             "News Today",
             style: TextStyle(
-              color: Colors.purple[400],
+              color: Color.fromRGBO(66, 165, 245, 1.0),
               fontWeight: FontWeight.bold,
               fontSize: 14.0
             ),
