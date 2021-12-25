@@ -4,6 +4,7 @@ import 'package:news_app/Controller/bloc_weather/weather_bloc.dart';
 import 'package:news_app/Controller/bloc_weather/weather_event.dart';
 import 'package:news_app/Controller/bloc_weather/weather_state.dart';
 import 'package:news_app/Model/weather.dart';
+import 'package:provider/provider.dart';
 
 //we can set statefulWidget as a child of statelessWidget
 class WeatherPage extends StatefulWidget {
@@ -49,32 +50,34 @@ class _WeatherPageState extends State<WeatherPage> {
         title: Text('Weather Page'),
       ),
       body: Container(
-          padding: EdgeInsets.symmetric(vertical: 16),
-          alignment: Alignment.center,
-          child: BlocProvider(
-            bloc: _weatherBloc,
-            child: BlocListener(//declare a blocListener to listen to the state changes and refresh the state in dispose
-              bloc: _weatherBloc,
-              listener: (context, WeatherState state){
-                if (state is WeatherLoaded) {
-                  print('${state.weather.temperature}');
-                }
-              },
-              child: BlocBuilder(
-                  bloc: _weatherBloc,
-                  builder: (BuildContext context, WeatherState state) {
-                    if (state is WeatherInitial) {
-                      return BuildInitialInput();
-                    } else if (state is WeatherLoading) {
-                      return BuildLoading();
-                    } else if (state is WeatherLoaded) {
-                      return Container(
-                        child: buildColumnWithData(state.weather),
-                      );
-                    }
-                  }),
-            ),
-          )),
+        padding: EdgeInsets.symmetric(vertical: 16),
+        alignment: Alignment.center,
+        child: BlocProvider(
+          builder: (context) => _weatherBloc,
+          child: BlocListener<WeatherBloc, WeatherState>(
+            //declare a blocListener to listen to the state changes and refresh the state in dispose
+            // bloc: _weatherBloc,
+            listener: (context, WeatherState state) {
+              if (state is WeatherLoaded) {
+                print('${state.weather.temperature}');
+              }
+            },
+            child: BlocBuilder<WeatherBloc, WeatherState>(
+                // bloc: _weatherBloc,
+                builder: (BuildContext context, WeatherState state) {
+                  if (state is WeatherInitial) {
+                    return BuildInitialInput();
+                  } else if (state is WeatherLoading) {
+                    return BuildLoading();
+                  } else if (state is WeatherLoaded) {
+                    return Container(
+                      child: buildColumnWithData(state.weather),
+                    );
+                  }
+                }),
+          ),
+        ),
+      ),
     );
   }
 }
